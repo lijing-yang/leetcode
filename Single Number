@@ -1,0 +1,13 @@
+// 异或，不仅能处理两次的情况，只要是出现偶数次都能够排除
+
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int x=0,i=0;
+        for(i=0;i<nums.size();i++){
+            x^=nums[i];
+        }
+        return x;
+        
+    }
+};
