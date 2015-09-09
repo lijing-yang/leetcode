@@ -30,7 +30,7 @@ public:
                 b=it->second.second;
                 c=jt->second.first;
                 d=jt->second.second;
-                if(a!=c && a!=d && b!=c && b!=d){
+                if(b<c){                             
                     vec={num[a],num[b],num[c],num[d]};
                     sort(vec.begin(),vec.end());
                     result.push_back(vec);
