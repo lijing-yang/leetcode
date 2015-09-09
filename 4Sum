@@ -1,0 +1,99 @@
+class Solution {
+public:
+    vector<vector<int> > fourSum(vector<int> &num, int target) {
+        
+        vector<vector<int> > result;
+        if(num.size()<4) return result;
+        sort(num.begin(),num.end());
+        
+        int i,j,k,a,b,c,d;
+        
+        unordered_multimap<int,pair<int,int> > cache;
+        for(i=0;i<num.size()-1;i++){
+            for(j=i+1;j<num.size();j++){
+                cache.insert(make_pair(num[i]+num[j],make_pair(i,j)));
+            }
+        }
+        
+        unordered_multimap<int,pair<int,int> >::iterator it;
+        unordered_multimap<int,pair<int,int> >::iterator jt;
+        pair<unordered_multimap<int,pair<int,int> >::iterator, unordered_multimap<int,pair<int,int> >::iterator> ret;
+        vector<int> vec;
+        
+        for(it=cache.begin();it!=cache.end();it++){    //  此种方法遍历重复加入result中结果太多，会TML
+            k= target- it->first;
+            if(cache.find(k)==cache.end()) continue;
+            ret=cache.equal_range(k);
+            for(jt=ret.first;jt!=ret.second;++jt){
+                if(jt==it) continue;
+                a=it->second.first;
+                b=it->second.second;
+                c=jt->second.first;
+                d=jt->second.second;
+                if(a!=c && a!=d && b!=c && b!=d){
+                    vec={num[a],num[b],num[c],num[d]};
+                    sort(vec.begin(),vec.end());
+                    result.push_back(vec);
+                }
+            }
+        }
+        sort(result.begin(),result.end());
+        result.erase(unique(result.begin(),result.end()),result.end());
+        
+        return result;
+    }
+};
+
+//////////////////////////////////////////////////////////////////////////////////
+
+class Solution {
+public:
+    vector<vector<int> > fourSum(vector<int> &num, int target) {
+        
+        vector<vector<int> > result;
+        if(num.size()<4) return result;
+        sort(num.begin(),num.end());
+        
+        int i,j,k,a,b,c,d;
+        
+        unordered_multimap<int,pair<int,int> > cache;
+        for(i=0;i<num.size()-1;i++){
+            for(j=i+1;j<num.size();j++){
+                cache.insert(make_pair(num[i]+num[j],make_pair(i,j)));
+            }
+        }
+        
+        unordered_multimap<int,pair<int,int> >::iterator jt;
+        pair<unordered_multimap<int,pair<int,int> >::iterator, unordered_multimap<int,pair<int,int> >::iterator> ret;
+        vector<int> vec;
+        
+        for(i=0;i<num.size()-3;i++){
+            
+            if(i!=0 && num[i]==num[i-1]) continue; // 防止第一个元素重复
+            
+            for(j=i+1;j<num.size()-2;j++){
+                
+                if(j!=i+1 && num[j]==num[j-1]) continue;//防止第二个元素重复
+                
+                k=target-num[i]-num[j];
+                if(cache.find(k)==cache.end()) continue;
+                ret=cache.equal_range(k);
+                for(jt=ret.first;jt!=ret.second;++jt){
+                    if(jt->second.first<=j) continue;
+                    vec={num[i],num[j],num[jt->second.first],num[jt->second.second]};
+                    result.push_back(vec);
+                    
+                }
+                
+            }
+        }
+        
+        sort(result.begin(),result.end());
+        result.erase(unique(result.begin(),result.end()),result.end());
+        
+        return result;
+    }
+};
+
+
+
