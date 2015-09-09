@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        
+        if(nums.size()==0) return 0;
+        
+        sort(nums.begin(),nums.end());
+        
+        pair<vector<int>::iterator, vector<int>::iterator> result;
+        result = equal_range(nums.begin(),nums.end(),val);  //  equal_range 函数返回的是一对迭代器  分别指向值为val的第一个元素的位置，和最后一个值为val的元素的“后面的位置”
+        nums.erase(result.first,result.second);
+        return nums.size();
+        
+    }
+};
+
