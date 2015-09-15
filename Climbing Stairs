@@ -1,0 +1,22 @@
+斐波那契数列 
+n>=2时，为了爬到第n阶，有两种方法：
+从(n-1)阶迈一步
+从(n-2)阶迈两步
+即f(n)=f(n-1)+f(n-2) 
+
+直接使用递归调用回超时，因为只求f(n),所以用迭代，求得f(n)的值
+
+class Solution {
+public:
+    int climbStairs(int n) {
+        int pre=0,cur=1,temp;
+        for(int i=1;i<=n;i++){
+            temp=cur;
+            cur+=pre;
+            pre=temp;
+        }
+        return cur;
+    }
+};
+
+另：可以使用斐波那契数列的通项直接计算结果
