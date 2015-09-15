@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int i,t=0,p=0,s1=0,max_i=0;
+        int n=height.size();
+	    for(i=1;i<n;i++){
+		  if(height[i]>height[max_i]) max_i=i;      // 找到最高的柱子位置，将其作为中间，分别处理左右
+	    }
+	    for(i=0;i<max_i;i++){
+            if(height[i]>t) t=height[i];
+            else  s1=s1+(t-height[i]);
+	    }
+	    for(i=n-1;i>max_i;i--){
+            if(height[i]>p) p=height[i];
+            else  s1=s1+(p-height[i]);
+	    }
+	    return s1;
+        
+    }
+};
