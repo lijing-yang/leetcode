@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int n=gas.size();
+        vector<int> remain(n);
+        int i,j,s=0;
+        
+        for(i=0;i<n;i++)
+            remain[i]=gas[i]-cost[i];  // remain 记录如果从当前station开始，在这里加油之后，到下一个station时的剩余量
+        
+        
+        for(i=0;i<n;i++){
+            if(remain[i]<0) continue;  // 如果从当前开始，连下一个station都走不到，则跳过
+            if(i>0 && remain[i-1]>=0) continue;  // 上一个station可以走到这里，但是却不能走完全程，则从这个station开始肯定也不可以
+            j=(i+1)%n;
+            s=remain[i];
+            while(j!=i){
+                s+=remain[j];
+                if(s<0) break;
+                else { j++; j%=n; }
+            }
+            if(j==i) return i;
+        }
+        
+        return -1; 
+        
+    }
+};
+
