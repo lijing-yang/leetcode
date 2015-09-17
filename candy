@@ -1,0 +1,29 @@
+// 分别从左向右、从右向左扫一遍，分别保证当前的等级如果大于前一个等级，那么当前糖果一定要比前一个小朋友糖果多
+// 初始时，每个小朋友都有一颗糖
+
+class Solution {
+public:
+    int candy(vector<int>& ratings) {
+        int i,n,mark,total=0;
+        n=ratings.size();
+        vector<int> candies(n,1);
+        
+        for(i=1,mark=1;i<n;i++){
+            if(ratings[i]>ratings[i-1])
+                candies[i]=max(++mark,candies[i]);
+            else
+                mark=1;
+        }
+        
+        for(i=n-2,mark=1;i>=0;i--){
+            if(ratings[i]>ratings[i+1])
+                candies[i]=max(++mark,candies[i]);
+            else
+                mark=1;
+        }
+        
+        return accumulate(&candies[0],&candies[0]+n,0);
+        
+        
+    }
+};
