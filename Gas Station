@@ -1,3 +1,5 @@
+// 有O(n)的方法，请思考
+
 class Solution {
 public:
     int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
