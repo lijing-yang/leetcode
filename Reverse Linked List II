@@ -1,0 +1,57 @@
+// 如下方法一为正常思路解法，从前面向后数到第m个时，开始置反；（采用头插法置反）
+// 方法二借用vector数组，定义ListNode类型的vector数组，将第m-n个节点存入vector中，再借助vector容器，置反m-n中的val值即可
+
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        
+        if(m==n) return head;
+    
+        ListNode pre(-1);
+        pre.next=head;
+        
+        ListNode *p = &pre;
+        ListNode *q,*pm_pre;;
+    
+        for(int i=0;i<m-1;i++){
+            p=p->next;
+        }
+        pm_pre=p;
+        p=p->next;
+        q=p->next;
+    
+        for(int i=m;i<n;i++){
+            p->next=q->next;  // 先跳过要置反的这个节点
+            q->next=pm_pre->next; // 再把这个节点插在头结点（此处为第（m-1)个节点）的后面
+            pm_pre->next=q;   // 注意采用头插法时，25,26行代码顺序不能交换
+            q=p->next;
+        }
+    
+        return pre.next;
+        
+    }
+};
+
+
+
+class Solution {  
+public:  
+    ListNode *reverseBetween(ListNode *head, int m, int n) {  
+        vector<ListNode*> range(n - m + 1);  
+          
+        ListNode* iter = head;  
+        for(int i = 1; i < m; ++i)  
+            iter = iter->next;  
+              
+        for(int i = m, j = 0; i <= n; ++i, ++j)  
+        {  
+            range[j] = iter;  
+            iter = iter->next;  
+        }  
+          
+        for(size_t i = 0; i < range.size() / 2; ++i)  
+            swap(range[i]->val, range[range.size() - i - 1]->val);  
+          
+        return head;  
+    }  
+};  
