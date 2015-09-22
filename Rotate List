@@ -1,0 +1,34 @@
+// 先遍历一遍，得出链表的长度n，同时将尾节点的next指向head（连成环），然后从头开始向后走n-k-1步，断开即可
+
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        
+        if(head==NULL || head->next==NULL || k==0)
+            return head;
+        
+        ListNode *p=head;
+        int n=1,i;
+        
+        while(p->next){
+            n++;
+            p=p->next;
+        }
+        
+        if(k%n==0) return head;
+        
+        if(k>n) k%=n;
+        
+        p->next=head;
+        
+        for(i=0,p=head;i<n-k-1;i++,p=p->next){}
+        
+        head=p->next;
+        p->next=NULL;
+        
+        return head;
+        
+        
+        
+    }
+};
