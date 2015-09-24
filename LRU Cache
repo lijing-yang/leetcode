@@ -1,0 +1,62 @@
+//使用hashmap和双向链表来实现
+
+class LRUCache{
+private:
+    int max_capacity;
+    list<pair<int,int> > cache;
+    map< int, list<pair<int, int> > :: iterator> cachemp ;   // 存放的是key值，和指向链表中相应位置的迭代器
+    
+public:
+    LRUCache(int capacity) {
+        
+        max_capacity=capacity;
+        
+    }
+    
+    int get(int key) {
+        
+        map<int,list<pair<int,int> >::iterator>::iterator it;
+        it=cachemp.find(key);
+        if(it==cachemp.end())
+            return -1;
+            
+        list<pair<int,int> > ::iterator list_it;
+        list_it=it->second;
+        pair<int,int> ptr=*list_it;                       // 如果要访问的节点存在，要将其移动到链表的最前端（保证LRU的特性）
+        cache.erase(list_it);                             // 先删除
+        cache.push_front(ptr);                            // 再插入到最前端
+        cachemp[key]=cache.begin();                       // 修改map中相应key值的指向链表的迭代器
+        
+        return cachemp[key]->second;
+        
+    }
+    
+    void set(int key, int value) {
+        
+        map<int,list<pair<int,int> >::iterator>::iterator it;
+        it=cachemp.find(key);
+        
+        if(it==cachemp.end()){
+            
+            if(cachemp.size()==max_capacity){                // cache以满，先将链表最后一个节点删除
+                cachemp.erase(cache.back().first);           // map中相应的key删除
+                cache.pop_back();                            // 链表中该节点删除
+            }
+            cache.push_front(make_pair(key,value));
+            cachemp[key]=cache.begin();
+        }
+        else{
+            list<pair<int,int> > ::iterator list_it;
+            list_it=it->second;
+            pair<int,int> ptr=*list_it;         // 该节点本来存在的情况下，除了要修改value值外，还要将其移动到链表的最前端（保证LRU特性）
+            cache.erase(list_it);
+            ptr.second=value;
+            cache.push_front(ptr);
+            cachemp[key]=cache.begin();
+            
+            
+        }
+        
+        
+    }
+};
