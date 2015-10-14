@@ -1,0 +1,48 @@
+deep copy(深拷贝) and shallow copy（浅拷贝）的区别
+该题目要求为deep copy 即要求返回一个新的链表 （开辟新的空间，内容与指针关系与当前链表一致）
+/**
+ * Definition for singly-linked list with a random pointer.
+ * struct RandomListNode {
+ *     int label;
+ *     RandomListNode *next, *random;
+ *     RandomListNode(int x) : label(x), next(NULL), random(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    RandomListNode *copyRandomList(RandomListNode *head) {
+        
+        if(head==NULL) return NULL;
+        
+        RandomListNode *result,*p=head,*q;
+        
+        while(p!=NULL){
+            RandomListNode *node = new RandomListNode(p->label);
+            node->next=p->next;
+            p->next=node;
+            p=node->next;
+        }
+        
+        p=head;
+        
+        while(p!=NULL){
+            if(p->random!=NULL)
+                p->next->random=p->random->next;
+            p=p->next->next;
+        }
+        
+        p=head;result=p->next;q=result;
+        
+        while(q->next!=NULL){
+            p->next=q->next;
+            p=p->next;
+            q->next=p->next;
+            q=q->next;
+        }
+        
+        p->next=NULL;
+        q->next=NULL;
+        
+        return result;
+    }
+};
