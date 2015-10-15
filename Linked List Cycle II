@@ -1,0 +1,33 @@
+Linked List Cycle I 问题思路：
+  使用快慢指针p、q，每次分别走一步和走两步，如果存在环，则两指针一定会相遇（相遇在环上的某一个节点）
+  
+Linked List Cycle II 问题思路：
+  在p和q相遇之后，根据数学推导（p和q在相同的时间里走的距离是2倍的关系，令起点到环的起点距离为x，环起点到相遇点距离为a，全长为n，则有
+  2(x+a)=n+a  ---->  x+a + x =n 即p指针从相遇点再走x步可以遍历所有的点（走到环的起点），所以，在p、q相遇之后，令指针t从起点出发，和p同时匀速
+  前进，两指针相遇的节点即为环的起点
+  
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        
+        if(head== NULL || head->next == NULL) return NULL;
+        
+        ListNode *p=head->next,*q=head->next->next,*t=head;
+        
+        while(q!=NULL && q->next!=NULL && p!=q){
+            p=p->next;
+            q=q->next->next;
+        }
+        
+        if( q == NULL || q->next == NULL)
+            return NULL;
+        else{
+            while(t!=p){
+                t=t->next;
+                p=p->next;
+            }
+            return t;
+        }
+        
+    }
+};
