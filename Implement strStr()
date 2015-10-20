@@ -1,0 +1,93 @@
+// KMP方法：
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        
+        if(needle == "") return 0;
+        
+        int *next;
+        next=getNext(needle);
+        
+        return KMP(haystack,needle,next);
+        
+        
+    }
+    
+    int* getNext( string p){
+        
+        int n=p.size();
+        int *next = (int*)malloc(sizeof(int)*n);
+        next[0]=-1;
+        
+        int i=0,k=-1;
+        
+        while(i<n-1){
+            
+            if(k==-1 || p[i]==p[k]){
+                k++;
+                i++;
+                if(p[i]!=p[k])    //  29-32 是改进后的next数组，基本方法该四行可直接写为： next[i]=k;
+                    next[i]=k;            
+                else
+                    next[i]=next[k];
+            }
+            else
+                k=next[k];
+            
+        }
+        
+        return next;
+    }
+    
+    int KMP(string s, string p, int next[]){
+        
+        int i=0,j=0;
+        int s_len = s.size(),p_len=p.size();
+        
+        while(i<s_len && j<p_len){
+            
+            if(j==-1||s[i]==p[j]){
+                i++;j++;
+            }
+            else
+                j=next[j];
+            
+        }
+        
+        if(j==p_len) return i-j;
+        else return -1;
+        
+    }
+};
+
+暴力匹配方法如下：
+
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        
+        if(needle == "") return 0;
+        
+        int h=haystack.size(),n=needle.size();
+        int i=0,j=0;
+        
+        while(i<h && j<n){
+            
+            if(haystack[i]==needle[j]){
+                i++;j++;
+            }
+            
+            else{
+                i=i-j+1;
+                j=0;
+            }
+            
+            
+        }
+        
+        if(j==n) return i-j;
+        else return -1;
+        
+        
+    }
+};
