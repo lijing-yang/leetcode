@@ -1,0 +1,37 @@
+// 需要考虑的几种输入情况：
+  “  1235”  --> 1235  (前面空格全部省略）
+  “  ab123" or "++345"  --> return (除空格外）以非法数字开头的，返回0
+  " +123abc" or "+123 345" --> 123  中间遇到非法数字，返回前面数值
+  “ +12345678922545343” or "2343438394893489"  超出int能表示的上限 返回INT_MAX(2147483647)
+  "-2837893483948398"  超出int能表示的下限 返回INT_MIN （-2147483648）
+
+
+class Solution {
+public:
+    int myAtoi(string str) {
+        
+        if(str == "" ) return 0;
+        
+        int i=0,n=str.size(),sign=1,num=0;
+        
+        while(str[i]==' ' && i<n) i++;
+        
+        if(str[i] == '+')
+            i++;
+        else if(str[i] == '-'){
+            sign = -1;
+            i++;
+        }
+        
+        for(;i<n;i++){
+            if(str[i] < '0' || str[i] > '9')
+                break;
+            if(num > INT_MAX/10 || ( num == INT_MAX/10 && (str[i]-'0') > INT_MAX %10 ))
+                return sign == -1 ? INT_MIN : INT_MAX;
+            num = num*10 + str[i] - '0';
+                
+        }
+        
+        return num*sign;
+    }
+};
