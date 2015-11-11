@@ -1,0 +1,53 @@
+基本字符	
+I
+V
+X
+L
+C
+D
+M
+相应的阿拉伯数字表示为	
+1
+5
+10
+50
+100
+500
+1000
+相同的数字连写、所表示的数等于这些数字相加得到的数、如：Ⅲ=3；
+小的数字在大的数字的右边、所表示的数等于这些数字相加得到的数、 如：Ⅷ=8、Ⅻ=12；
+小的数字、（限于 Ⅰ、X 和 C）在大的数字的左边、所表示的数等于大数减小数得到的数、如：Ⅳ=4、Ⅸ=9；
+正常使用时、连写的数字重复不得超过三次。（表盘上的四点钟“IIII”例外）；
+在一个数的上面画一条横线、表示这个数扩大 1000 倍。
+
+
+class Solution {
+public:
+    int romanToInt(string s) {
+        
+        int num=0;
+        for(int i=0;i<s.size();i++){
+            if(  i==0 || romanNum(s[i]) <= romanNum(s[i-1])  )
+                num+=romanNum(s[i]);
+            else
+                num = ( num+romanNum(s[i])-2*romanNum(s[i-1]) );
+        }
+        
+        return num;
+        
+    }
+    
+    int romanNum(char a){
+        switch(a){
+            case 'I': return 1;  
+            case 'V': return 5;  
+            case 'X': return 10;  
+            case 'L': return 50;  
+            case 'C': return 100;  
+            case 'D': return 500;  
+            case 'M': return 1000;  
+        }  
+        return 0;
+    }
+    
+};
