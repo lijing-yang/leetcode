@@ -1,0 +1,60 @@
+// 方法一： 枚举法 （考虑满足条件的可能情况，逐一判断）
+空格：可出现在开始或结束  eg：口345口
+e： 最多出现一次，前面的部分必须满足数字要求，后面的部分不能再包含'.'，只能包含数字，遇到空格结束  eg： -345.5e45
+.： 最多出现一次，可出现在常数的最前或最后（eg： .343 和 343. 都是合法的），且如果是科学计数法形式（含有e），则'.'只能出现在e前面
++-：只能出现在数字的最开始，如果为科学计数法，在e之后可以再次出现 （eg： +34 和 -34.56e-2 都是合法的）
+
+class Solution {
+public:
+    bool isNumber(string s) {
+        
+        if(s=="") return false;
+        
+        bool point=false,num=false;
+        int i=0,n=s.size();
+        
+        while(i<n && s[i]==' '){            // 跳过前面的空格
+            i++;
+        }
+        
+        if(s[i]=='-' || s[i]=='+') i++;      // 正负号
+        
+        if(i==n) return false;
+        
+        for(;i<n;i++){               // 开始判断数值部分，以空格做结尾，或者以e做分隔）
+            if(s[i]==' ' || s[i]=='e') break;
+            if(s[i] == '.' && !point ) {         // '.'最多出现一次，用point来标记
+                point=true;
+                continue;
+            }
+            if(s[i]>='0' && s[i]<='9') {num=true;continue;}     // 数值必须是有效地，即字符串中必须出现0-9，用num做标记
+            return false;
+        }
+        
+        if(i==n){
+            if(num) return true;
+            else return false;
+        }
+        
+        if(s[i]=='e'){            // 科学计数法表示的情况
+            if(!num) return false;          // e前面的必须为有效字符
+            i++;
+            if(i==n) return false;        
+            if(s[i]=='-' || s[i]=='+') i++;   // e后面可再次出现正负号
+            num=false;                       // e后面也必须为有效字符（只能包含0-9，用num重新标记，不能包含小数点）
+            for(;i<n;i++){
+                if(s[i]==' ') break;                  // 以空格作结束
+                if(s[i] == '.') return false;
+                if(s[i]>='0' && s[i]<='9') {num=true;continue;}
+                return false;
+            }
+        }
+        
+        while(i<n && s[i]==' '){                   // 最后可冗余空格
+            i++;
+        }
+        
+        if(i==n && num) return true;            // 空格后必须结束（i==n） 且e后面（或者是非科学技术的情况，则num为重新标记之前的num）必须为有效字符
+        else return false;
+    }
+};
