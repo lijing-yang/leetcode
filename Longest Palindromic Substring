@@ -1,0 +1,31 @@
+//动态规划
+// bool f[i][j]数组，用来记录[i,j]之间的字符串是否为回文 状态转移方程如下：
+// f(i,j) = true                       ( i==j)
+//          s[i]==s[j]                 (i+1==j)
+//          s[i]==s[j] && f[i+1][j-1]  (j>i+1)
+
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        
+        int n = s.size();
+        bool f[n][n];
+        fill_n(&f[0][0],n*n,false);
+        
+        int maxlen=1,start=0;
+        int i,j;
+        
+        for(i=0;i<n;i++){
+            f[i][i]=true;
+            for(j=0;j<i;j++){
+                f[j][i] = ( s[i] == s[j] && ( i-j == 1 || f[j+1][i-1] ) );
+                if(f[j][i] && ( (i-j+1) > maxlen)) {
+                    maxlen = i-j+1;
+                    start = j;
+                }
+            }
+        }
+        
+        return s.substr(start,maxlen);
+    }
+};
