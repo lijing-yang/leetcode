@@ -1,0 +1,26 @@
+// 该问题括号的不同排列的个数为“卡兰特数”
+// 卡兰特数应用： 括号化（该题）、出栈次序（进栈序列为1-n，可能的出栈顺序）、凸多边形三角形划分
+// 当前左括号和右括号各自剩余left和right个，当两者同为0时，表示生成了一个结果，记录下来
+// 只要左括号还有剩余，就可以在当前的序列中加上一个左括号
+// 右括号还有剩余，并且left<right，表明之前序列中还有未匹配的左括号，则可以在当前序列中加上一个右括号
+
+class Solution {
+public:
+
+    void generate(int left,int right,string s,vector<string>& result){ 
+        if(left==0 && right==0)
+            result.push_back(s);
+        if(left>0)
+            generate(left-1,right,s+"(",result);
+        if(right>0 && left<right)
+            generate(left,right-1,s+")",result);
+    }
+
+    vector<string> generateParenthesis(int n) {
+        vector<string> result;
+        if(n==0) return result;
+        string s;
+        generate(n,n,s,result);
+        return result;
+    }
+};
