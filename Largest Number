@@ -25,14 +25,14 @@ public:
         
         bool flag = false;
         
-        for(int i=0;i<n;i++){
-            if(str[i]!="0" || flag){
+        for(int i=0;i<n;i++){       // 最后对‘0’的处理，因为之前数组中都是整型，所以只可能出现排序后为[0,0] 或 [1,0,0]的情况 
+            if(str[i]!="0" || flag){  // 对0的保留取决于0前面是否已经有非0的数据存在，若存在，则可直接在后面加0，若不存在，则跳过
                 flag = true;
                 result+=str[i];
             }
         }
         
-        if(!flag) result.push_back('0');
+        if(!flag) result.push_back('0'); // flag为非，说明没有非0元素出现，并且到这里已知数组非空，所以数组中全部为0，补一个0即可
         return result;
         
     }
