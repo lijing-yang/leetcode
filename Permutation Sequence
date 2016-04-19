@@ -1,3 +1,51 @@
+假设集合为[1,2,3,4]，求出第6个组合。
+第6个组合对应的下标为5（下标从0开始），我们首先求出5所对应的lehmer码
+（lehmer code的解释参考链接1）：http://www.keithschwarz.com/interesting/code/?dir=next-permutation
+5/3! = 0 余5
+5/2! = 2 余1
+1/1! = 1 余0
+0 (lehmer code最后一位总为0)
+所以所求lehmer码为0210
+
+当前集合对应的序列为1234
+接下来将lehmer码中的每个数字当做当前序列的下标，下标0对应的集合元素为1，当前序列变成234；下标2对应的集合元素为4，当前序列变成23；下标1对应的集合元素为3，当前序列变成2；下标0对应的元素为2
+所以所求的组合即为1432
+
+(每个数字为开头，后面的数字都有（n-1)！中排列组合，对固定位置的数字来讲，从上到下符合从小到大的规律，（前面出现过的数字除去不算）
+
+class Solution {
+public:
+    string getPermutation(int n, int k) {
+        
+        char num[9] = {'1','2','3','4','5','6','7','8','9'};
+        vector<char> number(num,num+9);
+        vector<int> index;
+        int t=n,a=k-1,b=n-1;
+        string result="";
+        
+        while(--t){
+            index.push_back(a/fanc(b));
+            a%=fanc(b--);
+        }
+        index.push_back(0);
+        for(int i=0;i<n;i++){
+            result+= (number[index[i]]);
+            number.erase(number.begin()+index[i]);
+        }
+        return result;
+    }
+    
+    int fanc(int x){
+        int i=1,y=1;
+        while(i<=x){
+            y *= i;
+            i++;
+        }
+        return y;
+    }
+};
+
+------------------------------------------------------------------------------------------------------------------------------
 class Solution {
 public:
     string getPermutation(int n, int k) {
